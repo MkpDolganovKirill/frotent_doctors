@@ -1,0 +1,29 @@
+.input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  width: 80%;
+}
+.input label {
+  width: 100%;
+  font-size: 1.5rem;
+  text-align: left;
+  text-shadow: -1px -1px lightgray;
+  font-weight: 600;
+}
+
+.input input {
+  width: 100%;
+  height: 50px;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding: 0 20px;
+  color: black;
+  font-size: 1.5rem;
+}
+
+.input input:focus-visible {
+  outline: 1px;
+  box-shadow: 0 0 5px white
+}
