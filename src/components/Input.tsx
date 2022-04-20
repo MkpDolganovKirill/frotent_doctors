@@ -41,11 +41,6 @@ const Input = ({ labelText, placeholder }: InputProps) => {
         }}
       />
     </ThemeProvider>
-    
-    // <div className='input'>
-    //   <label>{labelText}</label>
-    //   <input placeholder={placeholder}/>
-    // </div>
   )
 }
 
