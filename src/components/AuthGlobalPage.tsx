@@ -5,7 +5,7 @@ import RegisterPage from './RegisterPage';
 
 interface Props {}
 
-function AuthGlobalPage({}: Props) {
+const AuthGlobalPage = ({}: Props) => {
   return (
     <div className='auth-global-page'>
       <img typeof='svg' className='image' src={hospital} alt='hospital' />
