@@ -15,15 +15,6 @@ const theme = createTheme({
   },
 });
 
-const styles = {
-  inputRoot: {
-    fontSize: 30
-  },
-  labelRoot: {
-    fontSize: 30
-  }
-};
-
 const Input = ({ labelText, placeholder }: InputProps) => {
   return (
     <ThemeProvider theme={theme} >
