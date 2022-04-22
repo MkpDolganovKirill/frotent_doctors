@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import '../Styles/RegisterPage.scss';
 import { Button, ButtonProps, styled } from '@mui/material';
-import Input from './Input';
+import InputValue from './InputValue';
 import axios from 'axios';
 import SnackAlert from './SnackAlert';
+import Buttons from './Buttons';
 
 enum vertical {
   top = 'top',
@@ -26,14 +27,15 @@ enum type {
 
 const ActiveButton = styled(Button)<ButtonProps>(() => ({
   marginTop: '20px',
-  backgroundColor: '#E2574C',
-  color: 'white',
+  backgroundColor: 'white',
+  color: '#E2574C',
+  border: '1px solid #E2574C',
   transition: '.2s',
   fontWeight: '700',
   fontSize: '1rem',
   '&:hover': {
-    color: 'white',
-    backgroundColor: 'rgb(226, 87, 76)',
+    color: 'rgb(226, 87, 76)',
+    backgroundColor: 'white',
     boxShadow: '0 0 10px #E2574C'
   },
 }));
@@ -50,7 +52,7 @@ const InActiveButton = styled(Button)<ButtonProps>(() => ({
     color: '#E2574C',
     backgroundColor: 'rgba(226, 87, 76, 0.1)',
     textDecoration: 'underline',
-  },
+  }
 }));
 
 const RegisterPage = () => {
@@ -72,13 +74,22 @@ const RegisterPage = () => {
   const [invalid, setInvalid] = useState(true);
 
   const changeValues = (id: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const value = event.target.value
+    const value = event.target.value.trim()
     const newValues = { ...values, [id]: value };
     setValues(newValues);
-    if (newValues.login.trim().length < 6) return setInvalid(true);
-    if (!/^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{6}/.test(newValues.password.trim())) return setInvalid(true);
-    if (newValues.repidPass.trim() !== values.password.trim()) return setInvalid(true);
-    return setInvalid(false);
+    validateValues(newValues);
+  }
+
+  const validateValues = (newValues: any) => {
+    if (
+      newValues.login.length >= 6 && 
+      /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{6}/.test(newValues.password) && 
+      newValues.password === newValues.repidPass
+    ) {
+      setInvalid(false);
+    } else {
+      setInvalid(true);
+    }
   }
 
   const handleClose = () => {
@@ -130,44 +141,54 @@ const RegisterPage = () => {
       })
   }
 
+  enum typesButtons {
+    button = 'button',
+    submit = 'submit',
+    reset = 'reset'
+  }
+
   return (
     <div className='register-form-div'>
       <h2 className='register-form-title'>Регистрация</h2>
       <form className='register-form' onSubmit={handleSubmit}>
-        <Input 
+        <InputValue 
           value={values.login}
           onChange={changeValues}
+          stateValidate={values.login.length >= 6}
           id='login' 
           type='text'
           labelText='Логин' 
           placeholder='Введите логин'
           helperText='Не менее 6 символов' 
         />
-        <Input 
+        <InputValue 
           value={values.password}
           onChange={changeValues}
           id='password'
           type='password'
+          stateValidate={/^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{6}/.test(values.password) }
           labelText='Пароль' 
           placeholder='Введите пароль'
           helperText='Не меньше 6 символов, латинские буквы и хотя бы одна цифра'
         />
-        <Input 
+        <InputValue 
           value={values.repidPass}
           onChange={changeValues}
           id='repidPass'
           type='password'
+          stateValidate={(values.password === values.repidPass)}
           labelText='Повторите пароль' 
           placeholder='Повторите введенный пароль' 
           helperText='Пароль должен совпадать'
         />
         <div className="buttons">
-          <ActiveButton
+          <Buttons
+            text='Регистрация'
             disabled={invalid}
-            type='submit'
+            types={typesButtons.submit}
           >
             Зарегистрироваться
-          </ActiveButton>
+          </Buttons>
           <div className='SignIn'>
             <p>У вас уже есть аккаунт?</p>
             <InActiveButton>
