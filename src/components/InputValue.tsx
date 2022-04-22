@@ -16,7 +16,7 @@ interface InputProps {
   value: string,
   onChange: (id: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
   type: string,
-  stateValidate: boolean,
+  stateValidate?: boolean,
   labelText: string,
   placeholder?: string,
   helperText?: string
