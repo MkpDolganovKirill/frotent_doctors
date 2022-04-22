@@ -1,13 +1,13 @@
 import React from 'react';
 import hospital from '../images/hospital.svg';
 import '../Styles/AuthGolbalPage.scss';
-import RegisterPage from './RegisterPage';
+import AuthorizationPage from './AuthorizationPage';
 
 const AuthGlobalPage = () => {
   return (
     <div className='auth-global-page'>
       <img typeof='svg' className='image' src={hospital} alt='hospital' />
-      <RegisterPage />
+      <AuthorizationPage />
     </div>
   )
 };
