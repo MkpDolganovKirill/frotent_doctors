@@ -9,3 +9,12 @@
 .image {
   height: 50%;
 }
+
+@media (max-width: 1100px) {
+  .image {
+    display: none;
+  }
+  .auth-global-page {
+    min-height: 90vh;
+  }
+}

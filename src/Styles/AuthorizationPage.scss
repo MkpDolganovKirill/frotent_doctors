@@ -46,3 +46,27 @@ p.textAsk {
   display: flex;
   align-items: center;
 }
+
+@media (max-width: 400px) {
+  .auth-form-div {
+    height: 500px;
+  }
+
+  .auth-form-title {
+    font-size: 2rem;
+  }
+  .auth-form-div {
+    padding: 5px;
+  }
+
+  .buttons button {
+    font-size: 1rem;
+  }
+
+  .buttons {
+    align-items: center !important;
+  }
+  .SignIn {
+    flex-direction: column;
+  }
+}
