@@ -5,6 +5,7 @@ import InputValue from './InputValue';
 import axios from 'axios';
 import SnackAlert from './SnackAlert';
 import Buttons from './Buttons';
+import { useNavigate } from 'react-router-dom';
 
 enum vertical {
   top = 'top',
@@ -40,6 +41,8 @@ const InActiveButton = styled(Button)<ButtonProps>(() => ({
 
 const AuthorizationPage = () => {
 
+  const navigate = useNavigate();
+
   const [alertSnack, setAlertSnack] = useState({
     messageAlert: '',
     type: type.error,
@@ -60,7 +63,7 @@ const AuthorizationPage = () => {
     const newValues = { ...values, [id]: value };
     setValues(newValues);
     validateValues(newValues);
-  }
+  };
 
   const validateValues = (newValues: any) => {
     if (
@@ -70,8 +73,8 @@ const AuthorizationPage = () => {
       setInvalid(false);
     } else {
       setInvalid(true);
-    }
-  }
+    };
+  };
 
   const handleClose = () => {
     setAlertSnack({ ...alertSnack, open: false });
@@ -79,26 +82,15 @@ const AuthorizationPage = () => {
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const target = event.target as typeof event.target & {
-      login: { value: string };
-      password: { value: string };
-    };
     setInvalid(true);
+    localStorage.clear();
     await axios.post('http://localhost:8080/authorizationUser', { 
         login: values.login.trim(),
         password: values.password.trim()
     }).then(res => {
       localStorage.setItem('token', res.data.token);
-      setAlertSnack({
-        messageAlert: 'Авторизирован!',
-        type: type.success,
-        open: true,
-        vertical: vertical.top,
-        horizontal: horizontal.right
-      })
-      target.login.value = '';
-      target.password.value = '';
       setInvalid(false);
+      return navigate('/main', { replace: true });
     }).catch(err => {
       if (!err.response) {
         setAlertSnack({
@@ -107,10 +99,10 @@ const AuthorizationPage = () => {
           open: true,
           vertical: vertical.top,
           horizontal: horizontal.right
-        })
+        });
         setInvalid(false);
         return;
-      }
+      };
       if (err.response.data === 'Invalid username or password!' || err.response.data.message === 'Error! Params not correct!') {
         setAlertSnack({
           messageAlert: 'Неверный логин или пароль',
@@ -120,15 +112,15 @@ const AuthorizationPage = () => {
           horizontal: horizontal.right
         });
         setInvalid(false);
-      }
-    })
-  }
+      };
+    });
+  };
 
   enum typesButtons {
     button = 'button',
     submit = 'submit',
     reset = 'reset'
-  }
+  };
 
   return (
     <div className='auth-form-div'>
@@ -137,7 +129,6 @@ const AuthorizationPage = () => {
         <InputValue
           value={values.login}
           onChange={changeValues}
-          stateValidate={values.login.length > 0}
           id='login'
           type='text'
           labelText='Логин'
@@ -148,7 +139,6 @@ const AuthorizationPage = () => {
           onChange={changeValues}
           id='password'
           type='password'
-          stateValidate={values.password.length > 0}
           labelText='Пароль'
           placeholder='Введите пароль'
         />
@@ -162,7 +152,9 @@ const AuthorizationPage = () => {
           </Buttons>
           <div className='SignIn'>
             <p className='textAsk'>У вас еще нет аккаунта?</p>
-            <InActiveButton>
+            <InActiveButton
+              onClick={() => navigate('/auth/registration', { replace: true })}
+            >
               Зарегистрироваться
             </InActiveButton>
           </div>

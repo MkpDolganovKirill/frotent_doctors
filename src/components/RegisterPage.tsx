@@ -6,6 +6,7 @@ import InputValue from './InputValue';
 import axios from 'axios';
 import SnackAlert from './SnackAlert';
 import Buttons from './Buttons';
+import { useNavigate } from 'react-router-dom';
 
 enum vertical {
   top = 'top',
@@ -41,6 +42,8 @@ const InActiveButton = styled(Button)<ButtonProps>(() => ({
 }));
 
 const RegisterPage = () => {
+
+  const navigate = useNavigate();
 
   const [alertSnack, setAlertSnack] = useState({
     messageAlert: '',
@@ -88,22 +91,17 @@ const RegisterPage = () => {
       password: { value: string };
       repidPass: { value: string };
     };
+    localStorage.clear();
 
     await axios.post('http://localhost:8080/createNewUser', {
       login: values.login.trim(),
       password: values.password.trim()
     }).then(res => {
       localStorage.setItem('token', res.data.token);
-      setAlertSnack({
-        messageAlert: 'Пользователь зарегистрирован!',
-        type: type.success,
-        open: true,
-        vertical: vertical.top,
-        horizontal: horizontal.right
-      })
       target.login.value = '';
       target.password.value = '';
       target.repidPass.value = '';
+      return navigate('/main', { replace: true });
     }).catch(err => {
       if (!err.response) {
         setAlertSnack({
@@ -176,7 +174,9 @@ const RegisterPage = () => {
           </Buttons>
           <div className='SignIn'>
             <p>У вас уже есть аккаунт?</p>
-            <InActiveButton>
+            <InActiveButton
+              onClick={() => navigate('/auth/authorization', { replace: true })}
+            >
               Войти
             </InActiveButton>
           </div>
