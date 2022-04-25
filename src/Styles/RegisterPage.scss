@@ -42,4 +42,30 @@
   align-items: center;
 }
 
+@media (max-width: 400px) {
+  .register-form-div {
+    height: 500px;
+  }
+
+  .register-form-title {
+    font-size: 2rem;
+  }
+
+  .register-form-div {
+    padding: 5px;
+  }
+
+  .buttons button {
+    font-size: 1rem;
+  }
+
+  .buttons {
+    align-items: center !important;
+  }
+
+  .SignIn {
+    flex-direction: column;
+  }
+}
+
 
