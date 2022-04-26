@@ -1,23 +1,6 @@
 import React from 'react';
 import { Alert, Snackbar } from '@mui/material';
-
-enum vertical {
-  top = 'top',
-  bottom = 'bottom'
-};
-
-enum horizontal {
-  left = 'left',
-  center = 'center',
-  right = 'right'
-};
-
-enum type {
-  success = 'success',
-  error = 'error',
-  info = 'info',
-  warning = 'warning'
-};
+import { type, vertical, horizontal } from '../../../types/enums'
 
 interface SnackErrorAlertProps {
   messageAlert: string,

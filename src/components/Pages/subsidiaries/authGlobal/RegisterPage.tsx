@@ -1,45 +1,14 @@
 
 import React, { useState } from 'react';
-import '../Styles/RegisterPage.scss';
-import { Button, ButtonProps, styled } from '@mui/material';
-import InputValue from './InputValue';
-import axios from 'axios';
-import SnackAlert from './SnackAlert';
-import Buttons from './Buttons';
 import { useNavigate } from 'react-router-dom';
-
-enum vertical {
-  top = 'top',
-  bottom = 'bottom'
-};
-
-enum horizontal {
-  left = 'left',
-  center = 'center',
-  right = 'right'
-};
-
-enum type {
-  success = 'success',
-  error = 'error',
-  info = 'info',
-  warning = 'warning'
-};
-
-const InActiveButton = styled(Button)<ButtonProps>(() => ({
-  backgroundColor: 'transparent',
-  marginLeft: '20px',
-  color: '#E2574C',
-  transition: '.2s',
-  fontWeight: '900',
-  textDecoration: 'underline',
-  fontSize: '1rem',
-  '&:hover': {
-    color: '#E2574C',
-    backgroundColor: 'rgba(226, 87, 76, 0.1)',
-    textDecoration: 'underline',
-  }
-}));
+import axios from 'axios';
+import InputValue from '../../../components/inputs/InputValue';
+import SnackAlert from '../../../components/allerts/SnackAlert';
+import Buttons from '../../../components/buttons/Buttons';
+import { typesButtons } from '../../../../types/enums';
+import { type, vertical, horizontal } from '../../../../types/enums';
+import { InActiveButton } from '../../../../types/styledElements';
+import '../../../../Styles/pages/subsidiaries/authPage/RegisterPage.scss';
 
 const RegisterPage = () => {
 
@@ -66,7 +35,7 @@ const RegisterPage = () => {
     const newValues = { ...values, [id]: value };
     setValues(newValues);
     validateValues(newValues);
-  }
+  };
 
   const validateValues = (newValues: any) => {
     if (
@@ -77,8 +46,8 @@ const RegisterPage = () => {
       setInvalid(false);
     } else {
       setInvalid(true);
-    }
-  }
+    };
+  };
 
   const handleClose = () => {
     setAlertSnack({...alertSnack, open: false});
@@ -122,13 +91,7 @@ const RegisterPage = () => {
         })
       }
     })
-  }
-
-  enum typesButtons {
-    button = 'button',
-    submit = 'submit',
-    reset = 'reset'
-  }
+  };
 
   return (
     <div className='register-form-div'>
@@ -191,7 +154,7 @@ const RegisterPage = () => {
         handleClose={handleClose}
       />
     </div>
-  )
+  );
 };
 
 export default RegisterPage;

@@ -1,9 +1,9 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IOrdersData } from '../types/types';
-import CreateOrder from './CreateOrder';
-import OrderList from './OrderList';
+import axios from 'axios';
+import { IOrdersData } from '../../../types/types';
+import CreateOrder from '../subsidiaries/mainPage/CreateOrder';
+import OrderList from '../subsidiaries/mainPage/OrderList';
 
 const MainPage = () => {
 
@@ -21,12 +21,12 @@ const MainPage = () => {
 
   const updateOrders = () => {
     setUpdateFlag(true);
-  }
+  };
 
   useEffect(() => {
     getOrders();
     setUpdateFlag(false);
-  }, [updateFlag])
+  }, [updateFlag]);
 
   const getOrders = async () => {
     await axios.get('http://localhost:8080/getAllUserOrders', {
@@ -39,14 +39,14 @@ const MainPage = () => {
       if (!err.response) return console.log('lost connection!');
       if (err.response.data === "Uncorrect token!") return navigate('/', { replace: true });
     });
-  }
+  };
 
   return (
     <div className='MainPage'>
       <CreateOrder updateOrders={updateOrders}/>
       <OrderList orders={ordersData} updateOrders={updateOrders}/>
     </div>
-  )
+  );
 };
 
 export default MainPage;

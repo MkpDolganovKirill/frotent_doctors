@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import medicineIcon from '../images/medicine.svg';
-import '../Styles/Header.scss';
-import Buttons from './Buttons';
-
-enum typesButtons {
-  button = 'button',
-  submit = 'submit',
-  reset = 'reset'
-}
+import medicineIcon from '../../../images/medicine.svg';
+import Buttons from '../../components/buttons/Buttons';
+import { typesButtons } from '../../../types/enums';
+import '../../../Styles/pages/global/Header.scss';
 
 const Header = () => {
 
@@ -16,7 +11,7 @@ const Header = () => {
 
   const outFromProfile = () => {
     localStorage.clear();
-    navigate('/', {replace: true});
+    navigate('/auth/authorization');
   }
 
   const [title, setTitle] = useState('Войти в систему');

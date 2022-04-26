@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import '../Styles/Input.scss';
-import { 
-  createTheme, 
+import {  
   FormControl, 
   IconButton, 
   InputAdornment, 
@@ -10,6 +8,8 @@ import {
   ThemeProvider } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { theme } from '../../../types/themes';
+import '../../../Styles/components/inputs/Input.scss';
 
 interface InputProps {
   id: string,
@@ -20,15 +20,7 @@ interface InputProps {
   labelText: string,
   placeholder?: string,
   helperText?: string
-}
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#E2574C",
-    }
-  },
-});
+};
 
 const InputValue = ({ id, type, stateValidate, value, onChange, labelText, placeholder, helperText }: InputProps) => {
 
@@ -36,7 +28,7 @@ const InputValue = ({ id, type, stateValidate, value, onChange, labelText, place
 
   const setTypePass = () => {
     setShowPass(showPass === 'text' ? 'password' : 'text');
-  }
+  };
   
   return (
     <ThemeProvider theme={theme} >
@@ -69,7 +61,7 @@ const InputValue = ({ id, type, stateValidate, value, onChange, labelText, place
         <p className='helperText'>{helperText}</p>
       </FormControl>
     </ThemeProvider>
-  )
+  );
 };
 
 export default InputValue;
