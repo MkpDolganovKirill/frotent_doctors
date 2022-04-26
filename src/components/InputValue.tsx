@@ -13,7 +13,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 interface InputProps {
   id: string,
-  value: string,
+  value: any,
   onChange: (id: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
   type: string,
   stateValidate?: boolean,
@@ -44,14 +44,14 @@ const InputValue = ({ id, type, stateValidate, value, onChange, labelText, place
         <InputLabel htmlFor={id}>{labelText}</InputLabel>
         <OutlinedInput
           id={id}  
-          type={type === 'text' ? 'text' : `${showPass}`}
+          type={type === 'password' ? `${showPass}` : type}
           value={value}
           autoComplete='off'
           fullWidth
-          color={stateValidate ? 'success' : 'error'}
+          color={stateValidate ? 'success' : 'primary'}
           onChange={(e) => onChange(id, e)}
           endAdornment={
-            id !== 'login' ?
+            (id === 'password' || id === 'repidPass') ?
             <InputAdornment position="end">
                 <IconButton
                   onClick={setTypePass}

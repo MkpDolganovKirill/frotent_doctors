@@ -10,7 +10,7 @@ enum typesButtons {
 interface ButtonsProps {
   children?: React.ReactNode,
   text: string,
-  disabled: boolean,
+  disabled?: boolean,
   types: typesButtons,
   onClick?: () => void
 };
@@ -28,7 +28,6 @@ const Buttons: React.FC<ButtonsProps> = ({ text, disabled, types, onClick }) => 
     <ThemeProvider theme={theme} >
       <Button 
         sx={{
-          mt: '10px',
           fontSize: '1.2rem',
           fontWeight: '600'
         }}
