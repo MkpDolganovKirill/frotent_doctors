@@ -1,16 +1,13 @@
 import React from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import AuthGlobalPage from './components/AuthGlobalPage';
-import Header from './components/Header';
-import MainPage from './components/MainPage';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import AuthGlobalPage from './components/Pages/global/AuthGlobalPage';
+import Header from './components/Pages/global/Header';
+import MainPage from './components/Pages/global/MainPage';
+import AuthorizationPage from './components/Pages/subsidiaries/authGlobal/AuthorizationPage';
+import RegisterPage from './components/Pages/subsidiaries/authGlobal/RegisterPage';
 import './App.css';
-import AuthorizationPage from './components/AuthorizationPage';
-import RegisterPage from './components/RegisterPage';
 
 const App = () => {
-
-  let {  } = useLocation();
-
   return (
     <div className="App">
       <Header/>

@@ -1,21 +1,16 @@
 import React, { FC, useState } from 'react';
-import Buttons from './Buttons';
-import InputValue from './InputValue';
-import '../Styles/CreateOrder.scss'
-import DateInput from './DateInput';
-import InputSelect from './InputSelect';
-import { SelectChangeEvent } from '@mui/material';
 import axios from 'axios';
-
-enum typesButtons {
-  button = 'button',
-  submit = 'submit',
-  reset = 'reset'
-}
+import { SelectChangeEvent } from '@mui/material';
+import Buttons from '../../../components/buttons/Buttons';
+import InputValue from '../../../components/inputs/InputValue';
+import DateInput from '../../../components/inputs/DateInput';
+import InputSelect from '../../../components/inputs/InputSelect';
+import { typesButtons } from '../../../../types/enums';
+import '../../../../Styles/pages/subsidiaries/mainPage/CreateOrder.scss';
 
 interface CreateOrderProps {
   updateOrders: () => void
-}
+};
 
 const CreateOrder: FC<CreateOrderProps> = ({ updateOrders }) => {
   const [createValues, setCreateValues] = useState({

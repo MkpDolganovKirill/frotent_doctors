@@ -1,43 +1,12 @@
 import React, { useState } from 'react';
-import '../Styles/AuthorizationPage.scss';
-import { Button, ButtonProps, styled } from '@mui/material';
-import InputValue from './InputValue';
-import axios from 'axios';
-import SnackAlert from './SnackAlert';
-import Buttons from './Buttons';
 import { useNavigate } from 'react-router-dom';
-
-enum vertical {
-  top = 'top',
-  bottom = 'bottom'
-};
-
-enum horizontal {
-  left = 'left',
-  center = 'center',
-  right = 'right'
-};
-
-enum type {
-  success = 'success',
-  error = 'error',
-  info = 'info',
-  warning = 'warning'
-};
-
-const InActiveButton = styled(Button)<ButtonProps>(() => ({
-  backgroundColor: 'transparent',
-  color: '#E2574C',
-  transition: '.2s',
-  fontWeight: '900',
-  textDecoration: 'underline',
-  fontSize: '1rem',
-  '&:hover': {
-    color: '#E2574C',
-    backgroundColor: 'rgba(226, 87, 76, 0.1)',
-    textDecoration: 'underline',
-  }
-}));
+import axios from 'axios';
+import InputValue from '../../../components/inputs/InputValue';
+import SnackAlert from '../../../components/allerts/SnackAlert';
+import Buttons from '../../../components/buttons/Buttons';
+import { InActiveButton } from '../../../../types/styledElements';
+import { type, vertical, horizontal } from '../../../../types/enums';
+import '../../../../Styles/pages/subsidiaries/authPage/AuthorizationPage.scss';
 
 const AuthorizationPage = () => {
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import hospital from '../images/hospital.svg';
-import '../Styles/AuthGolbalPage.scss';
+import hospital from '../../../images/hospital.svg';
+import '../../../Styles/pages/global/AuthGlobalPage.scss';
 
 interface IAuthGlobalPageProps {
   children: React.ReactNode

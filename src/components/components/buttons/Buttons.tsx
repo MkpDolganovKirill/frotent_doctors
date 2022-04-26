@@ -1,11 +1,7 @@
-import { Button, createTheme, ThemeProvider } from '@mui/material';
 import React from 'react';
-
-enum typesButtons {
-  button = 'button',
-  submit = 'submit',
-  reset = 'reset'
-}
+import { Button, ThemeProvider } from '@mui/material';
+import { typesButtons } from '../../../types/enums';
+import { theme } from '../../../types/themes';
 
 interface ButtonsProps {
   children?: React.ReactNode,
@@ -14,14 +10,6 @@ interface ButtonsProps {
   types: typesButtons,
   onClick?: () => void
 };
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#E2574C",
-    }
-  },
-});
 
 const Buttons: React.FC<ButtonsProps> = ({ text, disabled, types, onClick }) => {
   return (
