@@ -7,12 +7,15 @@ import DateInput from '../../../components/inputs/DateInput';
 import InputSelect from '../../../components/inputs/InputSelect';
 import { typesButtons } from '../../../../types/enums';
 import '../../../../Styles/pages/subsidiaries/mainPage/CreateOrder.scss';
+import { IDoctorsData } from '../../../../types/types';
 
 interface CreateOrderProps {
-  updateOrders: () => void
+  updateOrders: () => void,
+  lostConnect: () => void,
+  doctors: IDoctorsData[]
 };
 
-const CreateOrder: FC<CreateOrderProps> = ({ updateOrders }) => {
+const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors }) => {
   const [createValues, setCreateValues] = useState({
     fullname: '',
     ordersdate: '',
@@ -26,6 +29,7 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders }) => {
     if (
       newValues.fullname &&
       newValues.ordersdate &&
+      new Date(newValues.ordersdate).getTime() > new Date().getTime() &&
       newValues.complaints &&
       newValues.doctorid
     ) {
@@ -43,23 +47,23 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders }) => {
   };
 
   const handleSubmit = async () => {
-    console.log(createValues);
     await axios.post('http://localhost:8080/addNewOrder', {
       ...createValues 
     }, {
       headers: { 
         accesstoken: `${localStorage.getItem('token')}` 
       }
-    }).then(res => {
+    }).then(() => {
       setCreateValues({
         fullname: '',
         doctorid: 0,
         ordersdate: '',
         complaints: ''
       });
+      setInvalid(true);
       updateOrders();
     }).catch(err => {
-      console.log({...err});
+      lostConnect();
     })
   }
 
@@ -79,6 +83,7 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders }) => {
         <InputSelect 
           id='doctorid'
           value={createValues.doctorid}
+          doctors={doctors}
           onChange={changeValues} 
           label='Врач:' 
         />

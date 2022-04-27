@@ -6,6 +6,7 @@ import SnackAlert from '../../../components/allerts/SnackAlert';
 import Buttons from '../../../components/buttons/Buttons';
 import { InActiveButton } from '../../../../types/styledElements';
 import { type, vertical, horizontal } from '../../../../types/enums';
+import { typesButtons } from '../../../../types/enums';
 import '../../../../Styles/pages/subsidiaries/authPage/AuthorizationPage.scss';
 
 const AuthorizationPage = () => {
@@ -85,12 +86,6 @@ const AuthorizationPage = () => {
     });
   };
 
-  enum typesButtons {
-    button = 'button',
-    submit = 'submit',
-    reset = 'reset'
-  };
-
   return (
     <div className='auth-form-div'>
       <h2 className='auth-form-title'>Вход</h2>
@@ -119,7 +114,7 @@ const AuthorizationPage = () => {
           >
             Зарегистрироваться
           </Buttons>
-          <div className='SignIn'>
+          <div className='SignIn-auth'>
             <p className='textAsk'>У вас еще нет аккаунта?</p>
             <InActiveButton
               onClick={() => navigate('/auth/registration', { replace: true })}
