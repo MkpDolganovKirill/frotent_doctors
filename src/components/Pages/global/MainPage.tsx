@@ -105,22 +105,22 @@ const MainPage = () => {
         open: true,
         vertical: vertical.top,
         horizontal: horizontal.center
-      }) } updateOrders={updateOrders}/>
-      {ordersData.length > 0 
-      ? 
-        <OrderList orders={ordersData} doctors={doctorsList} updateOrders={updateOrders} deleteOrder={deleteOrder} /> 
-      : 
+      })} updateOrders={updateOrders} />
+      {ordersData.length > 0
+        ?
+        <OrderList orders={ordersData} doctors={doctorsList} updateOrders={updateOrders} deleteOrder={deleteOrder} />
+        :
         <div className='not-orders'>
           <img src={doctorImg} alt='doctor' />
           <h2>У вас пока нет приемов</h2>
         </div>}
-      <SnackAlert 
+      <SnackAlert
         messageAlert={alertSnack.messageAlert}
         type={alertSnack.type}
         open={alertSnack.open}
         vertical={alertSnack.vertical}
         horizontal={alertSnack.horizontal}
-        handleClose={() => setAlertSnack({...alertSnack, open: false})}
+        handleClose={() => setAlertSnack({ ...alertSnack, open: false })}
       />
     </div>
   );
