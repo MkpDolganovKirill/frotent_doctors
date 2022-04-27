@@ -1,35 +1,18 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { FormControl, InputLabel, MenuItem, ThemeProvider } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import axios from 'axios';
 import { theme } from '../../../types/themes';
 import { IDoctorsData } from '../../../types/types';
 
 interface InputSelectProps {
   id: string,
   value: number,
+  doctors: IDoctorsData[],
   onChange: (id: string, event: SelectChangeEvent<number>) => void,
   label: string
 };
 
-const InputSelect: FC<InputSelectProps> = ({ id, value, onChange, label }) => {
-
-  const [doctorsList, setDoctorsList] = useState <IDoctorsData[]>([{
-    id: 0,
-    fullname: ''
-  }]);
-
-  useEffect(() => {
-    getDoctors();
-  }, []);
-
-  const getDoctors = async () => {
-    await axios.get('http://localhost:8080/getAllDoctors').then(res => {
-      setDoctorsList(res.data);
-    }).catch(err => {
-      if (err) return;
-    })
-  }
+const InputSelect: FC<InputSelectProps> = ({ id, value, doctors, onChange, label }) => {
 
   return (
     <ThemeProvider theme={theme}>
@@ -50,12 +33,12 @@ const InputSelect: FC<InputSelectProps> = ({ id, value, onChange, label }) => {
             key={0}
             value={0}
           >Не выбран</MenuItem>
-          {doctorsList.map((element) => (
+          {doctors.map((doctor) => (
             <MenuItem
-              key={element.id}
-              value={element.id}
+              key={doctor.id}
+              value={doctor.id}
             >
-              {element.fullname}
+              {doctor.fullname}
             </MenuItem>
           ))}
         </Select>
