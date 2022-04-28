@@ -101,80 +101,82 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 300 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Имя пациента</StyledTableCell>
-            <StyledTableCell align="center">Врач</StyledTableCell>
-            <StyledTableCell align="center">Дата приема</StyledTableCell>
-            <StyledTableCell align="center" >Жалобы</StyledTableCell>
-            <StyledTableCell align="center">Управление</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {orders.map((order) => (
-            <StyledTableRow key={order.id}>
-              <StyledTableCell component="th" scope="row">
-                {order.fullname}
-              </StyledTableCell>
-              <StyledTableCell align="center">{doctors.find((el) => {
-                return el.id === order.doctorid ? true : false
-              })?.fullname}</StyledTableCell>
-              <StyledTableCell align="center">{dateToString(order.ordersdate)}</StyledTableCell>
-              <StyledTableCell align="center">{order.complaints}</StyledTableCell>
-              <StyledTableCell align="center">
-                <div className="image-container">
-                  <img className='icon' src={editImg} alt='edit' onClick={() => setDialogEdit({
-                    ...dialogEdit,
-                    open: true,
-                    values: {
+    <div className='OrderList'>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 300 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Имя пациента</StyledTableCell>
+              <StyledTableCell align="center">Врач</StyledTableCell>
+              <StyledTableCell align="center">Дата приема</StyledTableCell>
+              <StyledTableCell align="center" >Жалобы</StyledTableCell>
+              <StyledTableCell align="center">Управление</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {orders.map((order) => (
+              <StyledTableRow key={order.id}>
+                <StyledTableCell component="th" scope="row">
+                  {order.fullname}
+                </StyledTableCell>
+                <StyledTableCell align="center">{doctors.find((el) => {
+                  return el.id === order.doctorid ? true : false
+                })?.fullname}</StyledTableCell>
+                <StyledTableCell align="center">{dateToString(order.ordersdate)}</StyledTableCell>
+                <StyledTableCell align="center">{order.complaints}</StyledTableCell>
+                <StyledTableCell align="center">
+                  <div className="image-container">
+                    <img className='icon' src={editImg} alt='edit' onClick={() => setDialogEdit({
+                      ...dialogEdit,
+                      open: true,
+                      values: {
+                        id: order.id,
+                        fullname: order.fullname,
+                        ordersdate: order.ordersdate,
+                        doctorid: order.doctorid,
+                        complaints: order.complaints
+                      }
+                    })} />
+                    <img className='icon' src={deleteImg} alt='delete' onClick={() => setDialog({
+                      open: true,
                       id: order.id,
-                      fullname: order.fullname,
-                      ordersdate: order.ordersdate,
-                      doctorid: order.doctorid,
-                      complaints: order.complaints
-                    }
-                  })} />
-                  <img className='icon' src={deleteImg} alt='delete' onClick={() => setDialog({
-                    open: true,
-                    id: order.id,
-                    title: 'Удаление приема',
-                    description: 'Вы уверены, что хотите удалить данный прием?'
-                  })} />
-                </div>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <DialogEdit
-        open={dialogEdit.open}
-        editValues={dialogEdit.values}
-        title={dialogEdit.title}
-        description={dialogEdit.description}
-        doctors={doctors}
-        invalid={invalid}
-        handleClose={() => setDialogEdit({
-          ...dialogEdit, open: false, values: {
-            id: 0,
-            fullname: '',
-            ordersdate: '',
-            doctorid: 0,
-            complaints: ''
-          }
-        })}
-        changeValues={changeValues}
-        saveOnDb={saveOnDataBase}
-      />
-      <DialogConfirm
-        title={dialog.title}
-        description={dialog.description}
-        open={dialog.open}
-        handleClose={() => setDialog({ ...dialog, open: false, id: 0 })}
-        agree={deleteElement}
-      />
-    </TableContainer>
+                      title: 'Удаление приема',
+                      description: 'Вы уверены, что хотите удалить данный прием?'
+                    })} />
+                  </div>
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <DialogEdit
+          open={dialogEdit.open}
+          editValues={dialogEdit.values}
+          title={dialogEdit.title}
+          description={dialogEdit.description}
+          doctors={doctors}
+          invalid={invalid}
+          handleClose={() => setDialogEdit({
+            ...dialogEdit, open: false, values: {
+              id: 0,
+              fullname: '',
+              ordersdate: '',
+              doctorid: 0,
+              complaints: ''
+            }
+          })}
+          changeValues={changeValues}
+          saveOnDb={saveOnDataBase}
+        />
+        <DialogConfirm
+          title={dialog.title}
+          description={dialog.description}
+          open={dialog.open}
+          handleClose={() => setDialog({ ...dialog, open: false, id: 0 })}
+          agree={deleteElement}
+        />
+      </TableContainer>
+    </div>
   );
 };
 

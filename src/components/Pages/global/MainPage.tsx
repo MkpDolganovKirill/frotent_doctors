@@ -8,6 +8,9 @@ import doctorImg from '../../../images/doctor.svg';
 import SnackAlert from '../../components/allerts/SnackAlert';
 import { type, vertical, horizontal } from '../../../types/enums';
 import '../../../Styles/pages/global/MainPage.scss';
+import SortPanel from '../subsidiaries/mainPage/SortPanel';
+import { SelectChangeEvent } from '@mui/material';
+
 
 const pad = (number: number) => number < 10 ? '0' + number : number;
 
@@ -28,6 +31,28 @@ const MainPage = () => {
     vertical: vertical.top,
     horizontal: horizontal.center
   });
+  const [sortStatus, setSortStatus] = useState({
+    sortMethod: '',
+    sortType: '',
+    dateWith: '',
+    dateFor: ''
+  });
+  const [dateGap, setDateGap] = useState(false);
+
+  const changeSortStatus = (field: string, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
+    const target = e.target.value;
+    if (field === 'sortMethod' && !target) {
+      setSortStatus({
+        sortMethod: target,
+        sortType: '',
+        dateWith: '',
+        dateFor: ''
+      });
+      setDateGap(false);
+    } else {
+      setSortStatus({ ...sortStatus, [field]: target })
+    }
+  }
 
   const updateOrders = () => {
     setUpdateFlag(!updateFlag);
@@ -36,7 +61,7 @@ const MainPage = () => {
   useEffect(() => {
     getOrders();
     getDoctors();
-  }, [updateFlag]);
+  }, [updateFlag, sortStatus]);
 
   const getDoctors = async () => {
     await axios.get('http://localhost:8080/getAllDoctors').then(res => {
@@ -56,6 +81,9 @@ const MainPage = () => {
     await axios.get('http://localhost:8080/getAllUserOrders', {
       headers: {
         'accesstoken': `${localStorage.getItem('token')}`
+      },
+      params: {
+        ...sortStatus
       }
     }).then(res => {
       const refactor = res.data.map((elem: IOrdersData) => {
@@ -108,7 +136,21 @@ const MainPage = () => {
       })} updateOrders={updateOrders} />
       {ordersData.length > 0
         ?
-        <OrderList orders={ordersData} doctors={doctorsList} updateOrders={updateOrders} deleteOrder={deleteOrder} />
+        <div className="panels">
+          <SortPanel
+            values={sortStatus}
+            changeValues={changeSortStatus}
+            dateGap={dateGap}
+            setDateGap={setDateGap}
+            setStateValues={setSortStatus}
+          />
+          <OrderList
+            orders={ordersData}
+            doctors={doctorsList}
+            updateOrders={updateOrders}
+            deleteOrder={deleteOrder}
+          />
+        </div>
         :
         <div className='not-orders'>
           <img src={doctorImg} alt='doctor' />
