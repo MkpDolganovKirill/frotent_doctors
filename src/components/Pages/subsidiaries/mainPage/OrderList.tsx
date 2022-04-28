@@ -52,7 +52,7 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
     if (
       newValues.values.fullname &&
       newValues.values.ordersdate &&
-      new Date(newValues.values.ordersdate).getTime() > new Date().getTime() &&
+      new Date(newValues.values.ordersdate).getTime() / 8.64e+7 >= Math.floor(new Date().getTime() / 8.64e+7) &&
       newValues.values.complaints &&
       newValues.values.doctorid
     ) {
@@ -77,7 +77,6 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
         accesstoken: `${localStorage.getItem('token')}`
       }
     }).then(() => {
-      console.log('я зашел в результат');
       setDialogEdit({
         ...dialogEdit,
         open: false,
@@ -94,6 +93,11 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
     }).catch(err => {
       console.log({ ...err });
     })
+  }
+
+  const deleteElement = () => {
+    setDialog({ ...dialog, open: false, id: 0 });
+    deleteOrder(dialog.id);
   }
 
   return (
@@ -151,7 +155,15 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
         description={dialogEdit.description}
         doctors={doctors}
         invalid={invalid}
-        handleClose={() => setDialogEdit({ ...dialogEdit, open: false })}
+        handleClose={() => setDialogEdit({
+          ...dialogEdit, open: false, values: {
+            id: 0,
+            fullname: '',
+            ordersdate: '',
+            doctorid: 0,
+            complaints: ''
+          }
+        })}
         changeValues={changeValues}
         saveOnDb={saveOnDataBase}
       />
@@ -160,7 +172,7 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
         description={dialog.description}
         open={dialog.open}
         handleClose={() => setDialog({ ...dialog, open: false, id: 0 })}
-        agree={() => deleteOrder(dialog.id)}
+        agree={deleteElement}
       />
     </TableContainer>
   );
