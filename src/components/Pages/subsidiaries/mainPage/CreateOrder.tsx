@@ -29,7 +29,7 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
     if (
       newValues.fullname &&
       newValues.ordersdate &&
-      new Date(newValues.ordersdate).getTime() > new Date().getTime() &&
+      new Date(newValues.ordersdate).getTime() / 8.64e+7 >= Math.floor(new Date().getTime() / 8.64e+7) &&
       newValues.complaints &&
       newValues.doctorid
     ) {
@@ -48,10 +48,10 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
 
   const handleSubmit = async () => {
     await axios.post('http://localhost:8080/addNewOrder', {
-      ...createValues 
+      ...createValues
     }, {
-      headers: { 
-        accesstoken: `${localStorage.getItem('token')}` 
+      headers: {
+        accesstoken: `${localStorage.getItem('token')}`
       }
     }).then(() => {
       setCreateValues({
@@ -70,47 +70,47 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
   return (
     <div className='CreateOrder'>
       <div className='create-input'>
-        <InputValue 
-          id='fullname' 
-          type='text' 
-          value={createValues.fullname} 
-          onChange={changeValues} 
+        <InputValue
+          id='fullname'
+          type='text'
+          value={createValues.fullname}
+          onChange={changeValues}
           labelText='Имя'
           placeholder='Введите ваше имя'
         />
       </div>
       <div className='create-input'>
-        <InputSelect 
+        <InputSelect
           id='doctorid'
           value={createValues.doctorid}
           doctors={doctors}
-          onChange={changeValues} 
-          label='Врач:' 
+          onChange={changeValues}
+          label='Врач:'
         />
       </div>
       <div className='create-input-date'>
-        <DateInput 
-          id='ordersdate' 
-          value={createValues.ordersdate} 
-          onChange={changeValues} 
+        <DateInput
+          id='ordersdate'
+          value={createValues.ordersdate}
+          onChange={changeValues}
           label='Дата приема'
         />
       </div>
       <div className='create-input-conplaints'>
-        <InputValue 
+        <InputValue
           id='complaints'
-          type='text' 
-          value={createValues.complaints} 
-          onChange={changeValues} 
+          type='text'
+          value={createValues.complaints}
+          onChange={changeValues}
           labelText='Жалобы'
-          placeholder='Введите ваши жалобы' 
+          placeholder='Введите ваши жалобы'
         />
       </div>
       <div className='create-button'>
-        <Buttons 
-          text='Добавить' 
-          types={typesButtons.button} 
-          onClick={handleSubmit} 
+        <Buttons
+          text='Добавить'
+          types={typesButtons.button}
+          onClick={handleSubmit}
           disabled={invalid}
         />
       </div>
