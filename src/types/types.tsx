@@ -5,10 +5,11 @@ export interface IDoctorsData {
 
 export interface IOrdersData {
   id: number,
-  fullname: string,
+  patient: string,
   ordersdate: string,
   doctorid: number,
-  complaints: string
+  complaints: string,
+  fullname: string
 }
 
 export interface ISortMethods {

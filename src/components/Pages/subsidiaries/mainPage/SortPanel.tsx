@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 import { ISortValues } from '../../../../types/types';
 import SelectSortTypes from '../../../components/inputs/SelectSortTypes';
@@ -37,6 +37,15 @@ const SortPanel: FC<SortPanelProps> = ({ values, changeValues, dateGap, setDateG
     dateFor: ''
   });
 
+  useEffect(() => {
+    if (values.sortMethod === 'id') {
+      setDateState({
+        dateWith: '',
+        dateFor: ''
+      })
+    }
+  }, [values.sortMethod]);
+
   const changeValuesDate = (id: string, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const target = e.target.value;
     setDateState({
@@ -55,26 +64,26 @@ const SortPanel: FC<SortPanelProps> = ({ values, changeValues, dateGap, setDateG
             label='Сортировать по:'
             methods={[
               {
-                id: '',
-                sortMethod: 'Не выбран'
+                id: 'id',
+                sortMethod: 'Не выбрано'
               },
               {
-                id: 'name',
+                id: 'patient',
                 sortMethod: 'По имени'
               },
               {
-                id: 'doctor',
+                id: 'fullname',
                 sortMethod: 'По докторам'
               },
               {
-                id: 'date',
+                id: 'ordersdate',
                 sortMethod: 'По дате'
               }
             ]}
             changeValues={changeValues}
           />
         </div>
-        {values.sortMethod ?
+        {values.sortMethod !== 'id' ?
           <><div className='sort-type'>
             <SelectSortTypes
               id='sortType'
@@ -98,7 +107,7 @@ const SortPanel: FC<SortPanelProps> = ({ values, changeValues, dateGap, setDateG
           <></>
         }
       </div>
-      {values.sortMethod && !dateGap ?
+      {values.sortMethod !== 'id' && !dateGap ?
         <h3
           className='filter'
           onClick={() => setDateGap(true)}
@@ -108,7 +117,7 @@ const SortPanel: FC<SortPanelProps> = ({ values, changeValues, dateGap, setDateG
         :
         <>
           {
-            values.sortMethod && dateGap ?
+            values.sortMethod !== 'id' && dateGap ?
               <div className="date-gap">
                 <div className='date-input'>
                   <DateInput
@@ -126,16 +135,20 @@ const SortPanel: FC<SortPanelProps> = ({ values, changeValues, dateGap, setDateG
                     onChange={changeValuesDate}
                   />
                 </div>
-                <Buttons
-                  text='Фильтровать'
-                  types={typesButtons.button}
-                  onClick={() => setStateValues({ ...values, ...dateState })}
-                />
-                <Buttons
-                  text='Закрыть'
-                  types={typesButtons.button}
-                  onClick={closeFilter}
-                />
+                <div className="first-button">
+                  <Buttons
+                    text='Фильтровать'
+                    types={typesButtons.button}
+                    onClick={() => setStateValues({ ...values, ...dateState })}
+                  />
+                </div>
+                <div className="second-button">
+                  <Buttons
+                    text='Закрыть'
+                    types={typesButtons.button}
+                    onClick={closeFilter}
+                  />
+                </div>
               </div>
               :
               <></>

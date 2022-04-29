@@ -29,9 +29,9 @@ const DialogEdit: FC<DialogEditProps> = ({ open, handleClose, title, description
         </DialogContentText>
         <div className='create-input'>
           <InputValue
-            id='fullname'
+            id='patient'
             type='text'
-            value={editValues.fullname}
+            value={editValues.patient}
             onChange={changeValues}
             labelText='Имя'
             placeholder='Введите ваше имя'

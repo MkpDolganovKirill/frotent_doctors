@@ -13,7 +13,10 @@ import '../../../../Styles/pages/subsidiaries/mainPage/OrderList.scss';
 import DialogConfirm from '../../../components/allerts/DialogConfirm';
 import DialogEdit from '../../../components/allerts/DialogEdit';
 import { SelectChangeEvent } from '@mui/material';
+import { type, vertical, horizontal } from '../../../../types/enums';
 import axios from 'axios';
+import SnackAlert from '../../../components/allerts/SnackAlert';
+import { useNavigate } from 'react-router-dom';
 
 interface OrdersListProps {
   orders: IOrdersData[],
@@ -23,29 +26,35 @@ interface OrdersListProps {
 };
 
 const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteOrder }) => {
-
   const dateToString = (date: string): string => date.slice(0, 10).split('-').reverse().join('.');
 
+  const navigate = useNavigate();
   const [invalid, setInvalid] = useState(false);
-
   const [dialog, setDialog] = useState({
     open: false,
     id: 0,
     title: '',
     description: ''
   });
-
   const [dialogEdit, setDialogEdit] = useState({
     open: false,
     title: 'Изменение приема',
     description: 'Введите данные, которые вы хотите изменить и нажмите "Подтвердить"',
     values: {
       id: 0,
-      fullname: '',
+      patient: '',
       ordersdate: '',
       complaints: '',
-      doctorid: 0
+      doctorid: 0,
+      fullname: ''
     }
+  });
+  const [alertSnack, setAlertSnack] = useState({
+    messageAlert: '',
+    type: type.error,
+    open: false,
+    vertical: vertical.top,
+    horizontal: horizontal.center
   });
 
   const validateValues = (newValues: any) => {
@@ -82,16 +91,24 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
         open: false,
         values: {
           id: 0,
-          fullname: '',
+          patient: '',
           doctorid: 0,
           ordersdate: '',
-          complaints: ''
+          complaints: '',
+          fullname: ''
         }
       });
       setInvalid(true);
       updateOrders();
     }).catch(err => {
-      console.log({ ...err });
+      if (!err.response) return setAlertSnack({
+        messageAlert: 'Подключение к серверу отсутствует',
+        type: type.error,
+        open: true,
+        vertical: vertical.top,
+        horizontal: horizontal.center
+      });
+      if (err.response.data === "Uncorrect token!") return navigate('/auth/authorization', { replace: true });
     })
   }
 
@@ -114,14 +131,12 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => (
+            {orders.map((order: IOrdersData) => (
               <StyledTableRow key={order.id}>
                 <StyledTableCell component="th" scope="row">
-                  {order.fullname}
+                  {order.patient}
                 </StyledTableCell>
-                <StyledTableCell align="center">{doctors.find((el) => {
-                  return el.id === order.doctorid ? true : false
-                })?.fullname}</StyledTableCell>
+                <StyledTableCell align="center">{order.fullname}</StyledTableCell>
                 <StyledTableCell align="center">{dateToString(order.ordersdate)}</StyledTableCell>
                 <StyledTableCell align="center">{order.complaints}</StyledTableCell>
                 <StyledTableCell align="center">
@@ -131,10 +146,11 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
                       open: true,
                       values: {
                         id: order.id,
-                        fullname: order.fullname,
+                        patient: order.patient,
                         ordersdate: order.ordersdate,
                         doctorid: order.doctorid,
-                        complaints: order.complaints
+                        complaints: order.complaints,
+                        fullname: order.fullname
                       }
                     })} />
                     <img className='icon' src={deleteImg} alt='delete' onClick={() => setDialog({
@@ -149,6 +165,14 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
             ))}
           </TableBody>
         </Table>
+        <SnackAlert
+          messageAlert={alertSnack.messageAlert}
+          type={alertSnack.type}
+          open={alertSnack.open}
+          vertical={alertSnack.vertical}
+          horizontal={alertSnack.horizontal}
+          handleClose={() => setAlertSnack({ ...alertSnack, open: false })}
+        />
         <DialogEdit
           open={dialogEdit.open}
           editValues={dialogEdit.values}
@@ -159,10 +183,11 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
           handleClose={() => setDialogEdit({
             ...dialogEdit, open: false, values: {
               id: 0,
-              fullname: '',
+              patient: '',
               ordersdate: '',
               doctorid: 0,
-              complaints: ''
+              complaints: '',
+              fullname: ''
             }
           })}
           changeValues={changeValues}
