@@ -1,4 +1,5 @@
 .MainPage {
+  width: 100%;
   min-height: 90vh;
   margin-top: 10vh;
 }
@@ -9,6 +10,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   img {
     width: 100px;
     height: 100px;

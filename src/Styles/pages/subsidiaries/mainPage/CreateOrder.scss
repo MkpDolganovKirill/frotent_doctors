@@ -43,15 +43,18 @@
     flex-direction: column;
     height: auto;
   }
+
   .create-button,
   .create-input,
   .create-input-conplaints,
   .create-input-date {
     width: 100%;
+
     button {
       width: 95%;
     }
   }
+
   .create-input-date div {
     margin: 4px;
   }

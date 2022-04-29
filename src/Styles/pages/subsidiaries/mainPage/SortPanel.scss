@@ -1,0 +1,41 @@
+.SortPanel {
+  padding: 20px 20px 0 20px;
+  display: flex;
+  flex-direction: column;
+  transition: .5s;
+}
+
+.sort {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.sort-type,
+.sort-method {
+  width: 40%;
+  margin-bottom: 10px;
+  margin-right: 20px;
+}
+
+.date-gap {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 8px;
+  margin-bottom: 20px;
+}
+
+.date-input {
+  margin-right: 20px;
+  width: 30%;
+}
+
+.filter {
+  margin: 0 0 20px 8px;
+  width: fit-content;
+}
+
+.filter:hover {
+  cursor: pointer;
+}
