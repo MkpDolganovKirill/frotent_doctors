@@ -8,6 +8,7 @@ import InputSelect from '../../../components/inputs/InputSelect';
 import { typesButtons } from '../../../../types/enums';
 import '../../../../Styles/pages/subsidiaries/mainPage/CreateOrder.scss';
 import { IDoctorsData } from '../../../../types/types';
+import { useNavigate } from 'react-router-dom';
 
 interface CreateOrderProps {
   updateOrders: () => void,
@@ -16,8 +17,11 @@ interface CreateOrderProps {
 };
 
 const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors }) => {
+
+  const navigate = useNavigate();
+
   const [createValues, setCreateValues] = useState({
-    fullname: '',
+    patient: '',
     ordersdate: '',
     complaints: '',
     doctorid: 0
@@ -27,7 +31,7 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
 
   const validateValues = (newValues: any) => {
     if (
-      newValues.fullname &&
+      newValues.patient &&
       newValues.ordersdate &&
       new Date(newValues.ordersdate).getTime() / 8.64e+7 >= Math.floor(new Date().getTime() / 8.64e+7) &&
       newValues.complaints &&
@@ -55,7 +59,7 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
       }
     }).then(() => {
       setCreateValues({
-        fullname: '',
+        patient: '',
         doctorid: 0,
         ordersdate: '',
         complaints: ''
@@ -63,7 +67,8 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
       setInvalid(true);
       updateOrders();
     }).catch(err => {
-      lostConnect();
+      if (!err.response) return lostConnect();
+      if (err.response.data === "Uncorrect token!") return navigate('/auth/authorization', { replace: true });
     })
   }
 
@@ -71,9 +76,9 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
     <div className='CreateOrder'>
       <div className='create-input'>
         <InputValue
-          id='fullname'
+          id='patient'
           type='text'
-          value={createValues.fullname}
+          value={createValues.patient}
           onChange={changeValues}
           labelText='Имя'
           placeholder='Введите ваше имя'

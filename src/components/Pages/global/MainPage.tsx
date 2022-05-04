@@ -32,8 +32,8 @@ const MainPage = () => {
     horizontal: horizontal.center
   });
   const [sortStatus, setSortStatus] = useState({
-    sortMethod: '',
-    sortType: '',
+    sortMethod: 'id',
+    sortType: 'asc',
     dateWith: '',
     dateFor: ''
   });
@@ -41,18 +41,18 @@ const MainPage = () => {
 
   const changeSortStatus = (field: string, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
     const target = e.target.value;
-    if (field === 'sortMethod' && !target) {
+    if (field === 'sortMethod' && target === 'id') {
       setSortStatus({
-        sortMethod: target,
-        sortType: '',
+        sortMethod: 'id',
+        sortType: 'asc',
         dateWith: '',
         dateFor: ''
       });
       setDateGap(false);
     } else {
       setSortStatus({ ...sortStatus, [field]: target })
-    }
-  }
+    };
+  };
 
   const updateOrders = () => {
     setUpdateFlag(!updateFlag);
@@ -60,22 +60,7 @@ const MainPage = () => {
 
   useEffect(() => {
     getOrders();
-    getDoctors();
   }, [updateFlag, sortStatus]);
-
-  const getDoctors = async () => {
-    await axios.get('http://localhost:8080/getAllDoctors').then(res => {
-      setDoctorsList(res.data);
-    }).catch(err => {
-      if (err) return setAlertSnack({
-        messageAlert: 'Подключение к серверу отсутствует',
-        type: type.error,
-        open: true,
-        vertical: vertical.top,
-        horizontal: horizontal.center
-      });
-    })
-  }
 
   const getOrders = async () => {
     await axios.get('http://localhost:8080/getAllUserOrders', {
@@ -86,7 +71,7 @@ const MainPage = () => {
         ...sortStatus
       }
     }).then(res => {
-      const refactor = res.data.map((elem: IOrdersData) => {
+      const refactor = res.data.orders.rows.map((elem: IOrdersData) => {
         const date = new Date(elem.ordersdate);
         return {
           ...elem,
@@ -94,6 +79,7 @@ const MainPage = () => {
         }
       })
       setOrdersData(refactor);
+      setDoctorsList(res.data.doctors);
     }).catch(err => {
       if (!err.response) return setAlertSnack({
         messageAlert: 'Подключение к серверу отсутствует',
@@ -102,7 +88,7 @@ const MainPage = () => {
         vertical: vertical.top,
         horizontal: horizontal.center
       });
-      if (err.response.data === "Uncorrect token!") return navigate('/', { replace: true });
+      if (err.response.data === "Uncorrect token!") return navigate('/auth/authorization', { replace: true });
     });
   };
 
@@ -121,7 +107,7 @@ const MainPage = () => {
         vertical: vertical.top,
         horizontal: horizontal.center
       });
-      if (err.response.data === "Uncorrect token!") return navigate('/', { replace: true });
+      if (err.response.data === "Uncorrect token!") return navigate('/auth/authorization', { replace: true });
     })
   }
 
@@ -134,16 +120,16 @@ const MainPage = () => {
         vertical: vertical.top,
         horizontal: horizontal.center
       })} updateOrders={updateOrders} />
+      <SortPanel
+        values={sortStatus}
+        changeValues={changeSortStatus}
+        dateGap={dateGap}
+        setDateGap={setDateGap}
+        setStateValues={setSortStatus}
+      />
       {ordersData.length > 0
         ?
         <div className="panels">
-          <SortPanel
-            values={sortStatus}
-            changeValues={changeSortStatus}
-            dateGap={dateGap}
-            setDateGap={setDateGap}
-            setStateValues={setSortStatus}
-          />
           <OrderList
             orders={ordersData}
             doctors={doctorsList}
