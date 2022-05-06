@@ -6,14 +6,13 @@ import { IDoctorsData } from '../../../types/types';
 
 interface InputSelectProps {
   id: string,
-  value: number,
+  value: string,
   doctors: IDoctorsData[],
-  onChange: (id: string, event: SelectChangeEvent<number>) => void,
+  onChange: (id: string, event: SelectChangeEvent<string>) => void,
   label: string
 };
 
 const InputSelect: FC<InputSelectProps> = ({ id, value, doctors, onChange, label }) => {
-
   return (
     <ThemeProvider theme={theme}>
       <FormControl sx={{ m: 1, width: '100%' }}>

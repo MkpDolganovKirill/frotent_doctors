@@ -64,7 +64,7 @@ const SortPanel: FC<SortPanelProps> = ({ values, changeValues, dateGap, setDateG
             label='Сортировать по:'
             methods={[
               {
-                id: 'id',
+                id: 'createdAt',
                 sortMethod: 'Не выбрано'
               },
               {
@@ -72,7 +72,7 @@ const SortPanel: FC<SortPanelProps> = ({ values, changeValues, dateGap, setDateG
                 sortMethod: 'По имени'
               },
               {
-                id: 'fullname',
+                id: 'doctor',
                 sortMethod: 'По докторам'
               },
               {

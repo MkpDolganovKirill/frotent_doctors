@@ -22,7 +22,7 @@ interface OrdersListProps {
   orders: IOrdersData[],
   doctors: IDoctorsData[],
   updateOrders: () => void,
-  deleteOrder: (id: number) => void
+  deleteOrder: (id: string) => void
 };
 
 const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteOrder }) => {
@@ -32,7 +32,7 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
   const [invalid, setInvalid] = useState(false);
   const [dialog, setDialog] = useState({
     open: false,
-    id: 0,
+    id: '',
     title: '',
     description: ''
   });
@@ -41,12 +41,14 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
     title: 'Изменение приема',
     description: 'Введите данные, которые вы хотите изменить и нажмите "Подтвердить"',
     values: {
-      id: 0,
+      id: '',
       patient: '',
       ordersdate: '',
       complaints: '',
-      doctorid: 0,
-      fullname: ''
+      doctorId: '',
+      doctor: {
+        fullname: ''
+      }
     }
   });
   const [alertSnack, setAlertSnack] = useState({
@@ -59,11 +61,11 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
 
   const validateValues = (newValues: any) => {
     if (
-      newValues.values.fullname &&
+      newValues.values.patient &&
       newValues.values.ordersdate &&
       new Date(newValues.values.ordersdate).getTime() / 8.64e+7 >= Math.floor(new Date().getTime() / 8.64e+7) &&
       newValues.values.complaints &&
-      newValues.values.doctorid
+      newValues.values.doctorId
     ) {
       setInvalid(false);
     } else {
@@ -71,7 +73,7 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
     };
   };
 
-  const changeValues = (id: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<number>) => {
+  const changeValues = (id: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
     let value = event.target.value;
     const newValues = { ...dialogEdit, values: { ...dialogEdit.values, [id]: value } };
     setDialogEdit(newValues);
@@ -90,12 +92,14 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
         ...dialogEdit,
         open: false,
         values: {
-          id: 0,
+          id: '',
           patient: '',
-          doctorid: 0,
+          doctorId: '',
           ordersdate: '',
           complaints: '',
-          fullname: ''
+          doctor: {
+            fullname: ''
+          }
         }
       });
       setInvalid(true);
@@ -113,7 +117,7 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
   }
 
   const deleteElement = () => {
-    setDialog({ ...dialog, open: false, id: 0 });
+    setDialog({ ...dialog, open: false, id: '' });
     deleteOrder(dialog.id);
   }
 
@@ -136,7 +140,7 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
                 <StyledTableCell component="th" scope="row">
                   {order.patient}
                 </StyledTableCell>
-                <StyledTableCell align="center">{order.fullname}</StyledTableCell>
+                <StyledTableCell align="center">{order.doctor.fullname}</StyledTableCell>
                 <StyledTableCell align="center">{dateToString(order.ordersdate)}</StyledTableCell>
                 <StyledTableCell align="center">{order.complaints}</StyledTableCell>
                 <StyledTableCell align="center">
@@ -148,9 +152,11 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
                         id: order.id,
                         patient: order.patient,
                         ordersdate: order.ordersdate,
-                        doctorid: order.doctorid,
+                        doctorId: order.doctorId,
                         complaints: order.complaints,
-                        fullname: order.fullname
+                        doctor: {
+                          fullname: order.doctor.fullname
+                        }
                       }
                     })} />
                     <img className='icon' src={deleteImg} alt='delete' onClick={() => setDialog({
@@ -182,12 +188,14 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
           invalid={invalid}
           handleClose={() => setDialogEdit({
             ...dialogEdit, open: false, values: {
-              id: 0,
+              id: '',
               patient: '',
               ordersdate: '',
-              doctorid: 0,
+              doctorId: '',
               complaints: '',
-              fullname: ''
+              doctor: {
+                fullname: ''
+              }
             }
           })}
           changeValues={changeValues}
@@ -197,7 +205,7 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
           title={dialog.title}
           description={dialog.description}
           open={dialog.open}
-          handleClose={() => setDialog({ ...dialog, open: false, id: 0 })}
+          handleClose={() => setDialog({ ...dialog, open: false, id: '' })}
           agree={deleteElement}
         />
       </TableContainer>

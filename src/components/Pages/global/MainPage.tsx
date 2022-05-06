@@ -20,7 +20,7 @@ const MainPage = () => {
 
   const [ordersData, setOrdersData] = useState<IOrdersData[]>([]);
   const [doctorsList, setDoctorsList] = useState<IDoctorsData[]>([{
-    id: 0,
+    id: '',
     fullname: ''
   }]);
   const [updateFlag, setUpdateFlag] = useState<boolean>(true);
@@ -32,7 +32,7 @@ const MainPage = () => {
     horizontal: horizontal.center
   });
   const [sortStatus, setSortStatus] = useState({
-    sortMethod: 'id',
+    sortMethod: 'createdAt',
     sortType: 'asc',
     dateWith: '',
     dateFor: ''
@@ -43,7 +43,7 @@ const MainPage = () => {
     const target = e.target.value;
     if (field === 'sortMethod' && target === 'id') {
       setSortStatus({
-        sortMethod: 'id',
+        sortMethod: 'createdAt',
         sortType: 'asc',
         dateWith: '',
         dateFor: ''
@@ -71,7 +71,7 @@ const MainPage = () => {
         ...sortStatus
       }
     }).then(res => {
-      const refactor = res.data.orders.rows.map((elem: IOrdersData) => {
+      const refactor = res.data.orders.map((elem: IOrdersData) => {
         const date = new Date(elem.ordersdate);
         return {
           ...elem,
@@ -92,7 +92,7 @@ const MainPage = () => {
     });
   };
 
-  const deleteOrder = async (id: number) => {
+  const deleteOrder = async (id: string) => {
     await axios.delete(`http://localhost:8080/deleteUsersOrder?id=${id}`, {
       headers: {
         'accesstoken': `${localStorage.getItem('token')}`
