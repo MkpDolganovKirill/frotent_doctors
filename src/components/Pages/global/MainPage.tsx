@@ -63,14 +63,21 @@ const MainPage = () => {
   }, [updateFlag, sortStatus]);
 
   const getOrders = async () => {
+
     await axios.get('http://localhost:8080/getAllUserOrders', {
       headers: {
-        'accesstoken': `${localStorage.getItem('token')}`
+        'accesstoken': `${localStorage.getItem('accesstoken')}`,
+        'refreshtoken': `${localStorage.getItem('refreshtoken')}`
       },
       params: {
         ...sortStatus
       }
     }).then(res => {
+      if (res.status === 203) {
+        localStorage.setItem('accesstoken', res.data.accesstoken);
+        localStorage.setItem('refreshtoken', res.data.refreshtoken);
+        return getOrders();
+      }
       const refactor = res.data.orders.map((elem: IOrdersData) => {
         const date = new Date(elem.ordersdate);
         return {
@@ -88,19 +95,22 @@ const MainPage = () => {
         vertical: vertical.top,
         horizontal: horizontal.center
       });
-      if (err.response.data === "Uncorrect token!") {
-        localStorage.clear();
-        return navigate('/auth/authorization', { replace: true });
-      }
+      if (err.response.status === 403) return navigate('/auth/authorization', { replace: true });
     });
   };
 
   const deleteOrder = async (id: string) => {
     await axios.delete(`http://localhost:8080/deleteUsersOrder?id=${id}`, {
       headers: {
-        'accesstoken': `${localStorage.getItem('token')}`
+        'accesstoken': `${localStorage.getItem('accesstoken')}`,
+        'refreshtoken': `${localStorage.getItem('refreshtoken')}`
       }
-    }).then(() => {
+    }).then(res => {
+      if (res.status === 203) {
+        localStorage.setItem('accesstoken', res.data.accesstoken);
+        localStorage.setItem('refreshtoken', res.data.refreshtoken);
+        return deleteOrder(id);
+      }
       updateOrders();
     }).catch(err => {
       if (!err.response) return setAlertSnack({
@@ -110,19 +120,23 @@ const MainPage = () => {
         vertical: vertical.top,
         horizontal: horizontal.center
       });
-      if (err.response.data === "Uncorrect token!") return navigate('/auth/authorization', { replace: true });
-    })
-  }
+      if (err.response.status === 403) return navigate('/auth/authorization', { replace: true });
+    });
+  };
 
   return (
     <div className='MainPage'>
-      <CreateOrder doctors={doctorsList} lostConnect={() => setAlertSnack({
-        messageAlert: 'Подключение к серверу отсутствует',
-        type: type.error,
-        open: true,
-        vertical: vertical.top,
-        horizontal: horizontal.center
-      })} updateOrders={updateOrders} />
+      <CreateOrder
+        doctors={doctorsList}
+        lostConnect={() => setAlertSnack({
+          messageAlert: 'Подключение к серверу отсутствует',
+          type: type.error,
+          open: true,
+          vertical: vertical.top,
+          horizontal: horizontal.center
+        })}
+        updateOrders={updateOrders}
+      />
       <SortPanel
         values={sortStatus}
         changeValues={changeSortStatus}

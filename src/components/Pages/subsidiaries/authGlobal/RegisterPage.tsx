@@ -66,10 +66,8 @@ const RegisterPage = () => {
       login: values.login.trim(),
       password: values.password.trim()
     }).then(res => {
-      localStorage.setItem('token', res.data.token);
-      target.login.value = '';
-      target.password.value = '';
-      target.repidPass.value = '';
+      localStorage.setItem('accesstoken', res.data.accesstoken);
+      localStorage.setItem('refreshtoken', res.data.refreshtoken);
       return navigate('/main', { replace: true });
     }).catch(err => {
       if (!err.response) {
