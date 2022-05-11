@@ -39,8 +39,8 @@ const RegisterPage = () => {
 
   const validateValues = (newValues: any) => {
     if (
-      newValues.login.length >= 6 && 
-      /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{6}/.test(newValues.password) && 
+      newValues.login.length >= 6 &&
+      /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{6}/.test(newValues.password) &&
       newValues.password === newValues.repidPass
     ) {
       setInvalid(false);
@@ -50,7 +50,7 @@ const RegisterPage = () => {
   };
 
   const handleClose = () => {
-    setAlertSnack({...alertSnack, open: false});
+    setAlertSnack({ ...alertSnack, open: false });
   };
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
@@ -97,34 +97,34 @@ const RegisterPage = () => {
     <div className='register-form-div'>
       <h2 className='register-form-title'>Регистрация</h2>
       <form className='register-form' onSubmit={handleSubmit}>
-        <InputValue 
+        <InputValue
           value={values.login}
           onChange={changeValues}
           stateValidate={values.login.length >= 6}
-          id='login' 
+          id='login'
           type='text'
-          labelText='Логин' 
+          labelText='Логин'
           placeholder='Введите логин'
-          helperText='Не менее 6 символов' 
+          helperText='Не менее 6 символов'
         />
-        <InputValue 
+        <InputValue
           value={values.password}
           onChange={changeValues}
           id='password'
           type='password'
-          stateValidate={/^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{6}/.test(values.password) }
-          labelText='Пароль' 
+          stateValidate={/^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{6}/.test(values.password)}
+          labelText='Пароль'
           placeholder='Введите пароль'
           helperText='Не меньше 6 символов, латинские буквы и хотя бы одна цифра'
         />
-        <InputValue 
+        <InputValue
           value={values.repidPass}
           onChange={changeValues}
           id='repidPass'
           type='password'
           stateValidate={(values.password === values.repidPass)}
-          labelText='Повторите пароль' 
-          placeholder='Повторите введенный пароль' 
+          labelText='Повторите пароль'
+          placeholder='Повторите введенный пароль'
           helperText='Пароль должен совпадать'
         />
         <div className="buttons">
@@ -146,11 +146,11 @@ const RegisterPage = () => {
         </div>
       </form>
       <SnackAlert
-        messageAlert = {alertSnack.messageAlert}
-        type = {alertSnack.type}
-        open = {alertSnack.open}
-        vertical = {alertSnack.vertical}
-        horizontal = {alertSnack.horizontal}
+        messageAlert={alertSnack.messageAlert}
+        type={alertSnack.type}
+        open={alertSnack.open}
+        vertical={alertSnack.vertical}
+        horizontal={alertSnack.horizontal}
         handleClose={handleClose}
       />
     </div>

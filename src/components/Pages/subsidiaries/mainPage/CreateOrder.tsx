@@ -24,7 +24,7 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
     patient: '',
     ordersdate: '',
     complaints: '',
-    doctorid: 0
+    doctorId: ''
   });
 
   const [invalid, setInvalid] = useState(true);
@@ -35,7 +35,7 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
       newValues.ordersdate &&
       new Date(newValues.ordersdate).getTime() / 8.64e+7 >= Math.floor(new Date().getTime() / 8.64e+7) &&
       newValues.complaints &&
-      newValues.doctorid
+      newValues.doctorId
     ) {
       setInvalid(false);
     } else {
@@ -43,7 +43,7 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
     };
   };
 
-  const changeValues = (id: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<number>) => {
+  const changeValues = (id: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
     let value = event.target.value;
     const newValues = { ...createValues, [id]: value };
     setCreateValues(newValues);
@@ -60,7 +60,7 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
     }).then(() => {
       setCreateValues({
         patient: '',
-        doctorid: 0,
+        doctorId: '',
         ordersdate: '',
         complaints: ''
       });
@@ -86,8 +86,8 @@ const CreateOrder: FC<CreateOrderProps> = ({ updateOrders, lostConnect, doctors 
       </div>
       <div className='create-input'>
         <InputSelect
-          id='doctorid'
-          value={createValues.doctorid}
+          id='doctorId'
+          value={createValues.doctorId}
           doctors={doctors}
           onChange={changeValues}
           label='Врач:'

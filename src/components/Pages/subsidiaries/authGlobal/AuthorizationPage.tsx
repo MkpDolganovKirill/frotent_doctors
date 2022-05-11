@@ -54,9 +54,9 @@ const AuthorizationPage = () => {
     event.preventDefault();
     setInvalid(true);
     localStorage.clear();
-    await axios.post('http://localhost:8080/authorizationUser', { 
-        login: values.login.trim(),
-        password: values.password.trim()
+    await axios.post('http://localhost:8080/authorizationUser', {
+      login: values.login.trim(),
+      password: values.password.trim()
     }).then(res => {
       localStorage.setItem('token', res.data.token);
       setInvalid(false);

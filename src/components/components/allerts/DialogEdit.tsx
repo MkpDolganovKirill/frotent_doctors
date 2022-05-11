@@ -16,7 +16,7 @@ interface DialogEditProps {
   invalid: boolean,
   description: string,
   editValues: IOrdersData,
-  changeValues: (id: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<number>) => void
+  changeValues: (id: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void
 }
 
 const DialogEdit: FC<DialogEditProps> = ({ open, handleClose, title, description, invalid, editValues, changeValues, doctors, saveOnDb }) => {
@@ -39,8 +39,8 @@ const DialogEdit: FC<DialogEditProps> = ({ open, handleClose, title, description
         </div>
         <div className='create-input'>
           <InputSelect
-            id='doctorid'
-            value={editValues.doctorid}
+            id='doctorId'
+            value={editValues.doctorId}
             doctors={doctors}
             onChange={changeValues}
             label='Врач:'
