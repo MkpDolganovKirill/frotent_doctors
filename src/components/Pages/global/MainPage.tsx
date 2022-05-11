@@ -88,7 +88,10 @@ const MainPage = () => {
         vertical: vertical.top,
         horizontal: horizontal.center
       });
-      if (err.response.data === "Uncorrect token!") return navigate('/auth/authorization', { replace: true });
+      if (err.response.data === "Uncorrect token!") {
+        localStorage.clear();
+        return navigate('/auth/authorization', { replace: true });
+      }
     });
   };
 
