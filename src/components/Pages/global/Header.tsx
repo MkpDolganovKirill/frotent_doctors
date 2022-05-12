@@ -13,6 +13,7 @@ const Header = () => {
   const outFromProfile = async () => {
     await axios.delete('http://localhost:8080/deleteRefreshToken', {
       headers: {
+        'accesstoken': `${localStorage.getItem('accesstoken')}`,
         'refreshtoken': `${localStorage.getItem('refreshtoken')}`
       }
     }).catch(err => {
