@@ -85,9 +85,15 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
       ...dialogEdit.values
     }, {
       headers: {
-        accesstoken: `${localStorage.getItem('token')}`
+        'accesstoken': `${localStorage.getItem('accesstoken')}`,
+        'refreshtoken': `${localStorage.getItem('refreshtoken')}`
       }
-    }).then(() => {
+    }).then(res => {
+      if (res.status === 203) {
+        localStorage.setItem('accesstoken', res.data.accesstoken);
+        localStorage.setItem('refreshtoken', res.data.refreshtoken);
+        return saveOnDataBase();
+      }
       setDialogEdit({
         ...dialogEdit,
         open: false,
@@ -112,7 +118,7 @@ const OrderList: FC<OrdersListProps> = ({ orders, doctors, updateOrders, deleteO
         vertical: vertical.top,
         horizontal: horizontal.center
       });
-      if (err.response.data === "Uncorrect token!") return navigate('/auth/authorization', { replace: true });
+      if (err.response.status === 403) return navigate('/auth/authorization', { replace: true });
     })
   }
 

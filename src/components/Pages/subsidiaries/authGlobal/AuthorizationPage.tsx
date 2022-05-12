@@ -58,7 +58,8 @@ const AuthorizationPage = () => {
       login: values.login.trim(),
       password: values.password.trim()
     }).then(res => {
-      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('accesstoken', res.data.accesstoken);
+      localStorage.setItem('refreshtoken', res.data.refreshtoken);
       setInvalid(false);
       return navigate('/main', { replace: true });
     }).catch(err => {
