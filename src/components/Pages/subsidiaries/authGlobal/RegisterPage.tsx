@@ -79,7 +79,7 @@ const RegisterPage = () => {
           horizontal: horizontal.right
         })
       }
-      if (err.response.data.error.code === '23505') {
+      if (err.response.data.error.original.code === '23505') {
         setAlertSnack({
           messageAlert: 'Логин занят',
           type: type.error,
